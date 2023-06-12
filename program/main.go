@@ -8,26 +8,29 @@ import (
 
 func main() {
 	// Check if input is correct
-	if len(os.Args) > 3 {
-		fmt.Println("Too many arguments")
-		return
-	} 
-	if len(os.Args) < 2 {
-		fmt.Println("Input string missing")
+	if len(os.Args) != 3 {
+		fmt.Print("\nThis project requires the use of two arguments in order.\nCorrect format: go run . [STRING] [BANNER]\n\n")
+
 		return
 	}
-	argNum := 2
-	file := os.Args[1] // Read char file & string argument
-	if len(os.Args) == 2 {
+	rawInput := os.Args[1]
+	file := os.Args[2]
+	switch {
+	case file == "standard":
 		file = "standard.txt"
-		argNum--
+	case file == "shadow":
+		file = "shadow.txt"
+	case file == "thinkertoy":
+		file = "thinkertoy.txt"
+	default:
+		fmt.Println("\nAvailable banner formats are: standard, shadow or thinkertoy.")
+		return
 	}
 	sourceFile, err := os.ReadFile(file)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	rawInput := os.Args[argNum]
 
 	// Main function: Splitting (split string based on newline position)
 	// ∟--> Sub function: Formatting (change input to allow use of newline & qoutation marks)
