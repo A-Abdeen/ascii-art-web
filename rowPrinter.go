@@ -22,7 +22,12 @@ func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []by
 		} else {
 			if isPrint {
 				fmt.Print("\n")
+			} else {
+				RowWriter("", destination)
 			}
 		}
+	}
+	if !isPrint {
+		RowWriter("", destination)
 	}
 }
