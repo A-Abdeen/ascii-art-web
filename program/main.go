@@ -7,6 +7,11 @@ import (
 )
 
 func main() {
+	/*
+		TODO Tutorial 1
+		http.HandleFunc("/", SimpleServer)
+		http.ListenAndServe(":8080", nil)
+	*/
 	// Check if input is correct
 	var rawInput string
 	var outputFile string
@@ -59,3 +64,10 @@ func main() {
 	asciiart.RowPrinter(splitInput, sourceFile, asciiart.RowParser, outputFile, isPrint)
 
 }
+
+/*
+TODO tutorial 1
+func SimpleServer(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello %s", r.URL.Path[1:])
+}
+*/
