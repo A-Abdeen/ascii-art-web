@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api"
 	"asciiart"
 	"fmt"
 	"os"
@@ -8,6 +9,7 @@ import (
 
 func main() {
 	// Check if input is correct
+	api.Server()
 	var rawInput string
 	var outputFile string
 	isPrint := true
