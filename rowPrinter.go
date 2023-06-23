@@ -2,7 +2,8 @@ package asciiart
 
 import "fmt"
 
-func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []byte, destination string, isPrint bool) {
+func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []byte, destination string, isPrint bool) string {
+	var webOutput string
 	fullRowData := ""
 	for _, singleLine := range splitInput { // to print one line at a time
 		if singleLine != "" {
@@ -14,6 +15,7 @@ func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []by
 				}
 				if isPrint {
 					fmt.Println(fullRowData)
+					webOutput = webOutput + fullRowData + "\n"
 				} else {
 					RowWriter(fullRowData, destination)
 				}
@@ -22,6 +24,7 @@ func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []by
 		} else {
 			if isPrint {
 				fmt.Print("\n")
+				webOutput = webOutput + "\n"
 			} else {
 				RowWriter("", destination)
 			}
@@ -30,4 +33,6 @@ func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []by
 	if !isPrint {
 		RowWriter("", destination)
 	}
+
+	return webOutput
 }
