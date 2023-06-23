@@ -3,6 +3,8 @@ package main
 import (
 	"asciiart"
 	"fmt"
+	"log"
+	"net/http"
 	"os"
 )
 
@@ -12,6 +14,19 @@ func main() {
 		http.HandleFunc("/", SimpleServer)
 		http.ListenAndServe(":8080", nil)
 	*/
+
+	// TODO Tutorial 2
+	fileServer := http.FileServer(http.Dir("./static")) // tell server to look into the directory / folder
+
+	http.Handle("/", fileServer)            // ("/" is called root route) this handle tells server to send the route request into the filesServer above
+	http.HandleFunc("/form", formHandler)   // Handle a route by calling a function
+	http.HandleFunc("/hello", helloHandler) // Handle route by calling a function
+
+	fmt.Printf("Starting server at port 8080\n")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
+	}
+
 	// Check if input is correct
 	var rawInput string
 	var outputFile string
@@ -71,3 +86,21 @@ func SimpleServer(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello %s", r.URL.Path[1:])
 }
 */
+
+// TODO tutorial 2
+
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	// if r.URL.Path != "/hello" {
+	// 	http.Error(w, "404 not found", http.StatusNotFound)
+	// 	return
+	// }
+	if r.Method != "GET" { // We don't want the user to post anything
+		http.Error(w, "Method not supported", http.StatusNotFound)
+		return
+	}
+	fmt.Fprintf(w, "Hello!")
+}
+
+func formHandler(w http.ResponseWriter, r *http.Request) {
+
+}
