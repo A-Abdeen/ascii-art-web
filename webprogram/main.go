@@ -1,20 +1,26 @@
-package main 
+package main
 
 import (
-	"fmt"
-	"net/http"
-	"log"
 	"asciiart"
+	"fmt"
+	"html/template"
+	"log"
+	"net/http"
 )
 
-func main(){
+type ArtLoader struct {
+	Active bool
+	Art    string
+}
+
+func main() {
 	fileServer := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fileServer)
 	http.HandleFunc("/asciiart", ArtHandler)
-	fmt.Printf("starting server at port 8080\n") 
-		if err := http.ListenAndServe(":8080", nil); err != nil {
-			log.Fatal(err)
-		}
+	fmt.Printf("starting server at port 8080\n")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func ArtHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,9 +31,11 @@ func ArtHandler(w http.ResponseWriter, r *http.Request) {
 	InputString := r.FormValue("input")
 	banner := r.FormValue("banner")
 	if len(InputString) > 30 {
-		fmt.Fprintf(w, " HTTP Error 400 - Bad Request")
+		fmt.Fprintf(w, " HTTP Error 400 - Bad Request", http.StatusBadRequest)
 		return
 	}
 	InputString = asciiart.AsciiArt(InputString, banner)
-	fmt.Fprintf(w, InputString)
+	p := ArtLoader{Active: true, Art: InputString}
+	t, _ := template.ParseFiles("asciiart.html")
+	t.Execute(w, p)
 }

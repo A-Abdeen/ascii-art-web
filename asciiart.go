@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func AsciiArt (InputString string, banner string) string {
+func AsciiArt(InputString string, banner string) string {
 	file := banner
 	switch {
 	case file == "standard":
