@@ -6,18 +6,17 @@ import (
 )
 
 func AsciiArt(InputString string, banner string) string {
-	file := banner
 	switch {
-	case file == "standard":
-		file = "standard.txt"
-	case file == "shadow":
-		file = "shadow.txt"
-	case file == "thinkertoy":
-		file = "thinkertoy.txt"
+	case banner == "standard":
+		banner = "standard.txt"
+	case banner == "shadow":
+		banner = "shadow.txt"
+	case banner == "thinkertoy":
+		banner = "thinkertoy.txt"
 	default:
 		return "\nAvailable banner formats are: standard, shadow or thinkertoy."
 	}
-	sourceFile, err := os.ReadFile(file)
+	sourceFile, err := os.ReadFile(banner)
 	if err != nil {
 		return err.Error()
 	}
