@@ -7,11 +7,6 @@ import (
 	"net/http"
 )
 
-// type ArtLoader struct {
-// 	Active bool
-// 	Art    string
-// }
-
 func main() {
 	fileServer := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fileServer)
@@ -29,14 +24,6 @@ func ArtHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	InputString := r.FormValue("input")
 	banner := r.FormValue("banner")
-	// if len(InputString) > 30 {
-	// 	fmt.Fprintf(w, " HTTP Error 400 - Bad Request", http.StatusBadRequest)
-	// 	return
-	// }
 	InputString = asciiart.AsciiArt(InputString, banner)
-	// p := ArtLoader{Active: true, Art: InputString}
-	// t, _ := template.ParseFiles("asciiart.html")
-	// t.Execute(w, p)
 	fmt.Fprintf(w, "%s", InputString)
-
 }
