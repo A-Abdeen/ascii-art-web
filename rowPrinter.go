@@ -1,6 +1,6 @@
 package asciiart
 
-import "fmt"
+// import "fmt"
 
 func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []byte) string {
 	fullRowData := ""
@@ -14,7 +14,7 @@ func RowPrinter(splitInput []string, sourceFile []byte, f func([]byte, int) []by
 					fullRowData = fullRowData + string(charRowData)
 				}
 				OutputWeb = OutputWeb + fullRowData + "\n"
-				fmt.Println(fullRowData)
+				// fmt.Println(fullRowData)
 				fullRowData = ""
 			}
 		} else {
