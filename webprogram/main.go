@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type Art struct {
@@ -27,12 +28,38 @@ func ArtHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
 		return
 	}
-	inputString := r.FormValue("input")
-	banner := r.FormValue("banner")
-	output := Art{Output: asciiart.AsciiArt(inputString, banner)}
-	t, err := template.ParseFiles("template.html")
-	if err != nil {
-		log.Fatal(err)
+	if r.Method != "POST" || r.URL.Path != "/asciiart" {
+		http.Error(w, "Only POST requests are allowed.\nUse the main page to create new art", http.StatusMethodNotAllowed)
+		return
 	}
-	t.Execute(w, output)
+
+	inputString := r.FormValue("input")
+	if IsAscii(inputString) {
+		banner := r.FormValue("banner")
+		output := Art{Output: asciiart.AsciiArt(inputString, banner)}
+		if strings.HasPrefix(output.Output, "err: ") {
+			http.Error(w, "Internal Server Error: "+strings.TrimPrefix(output.Output, "err: "), http.StatusInternalServerError)
+			return
+		}
+		t, err := template.ParseFiles("template.html")
+		if err != nil {
+			log.Fatal(err)
+		}
+		t.Execute(w, output)
+	} else {
+		http.Error(w, "Invalid input: Only use English letters, numbers & characters", http.StatusBadRequest)
+		fmt.Println("Unacceptable input")
+	}
+}
+
+func IsAscii(input string) bool {
+	for _, char := range input {
+		if char == 10 {
+			continue
+		}
+		if char < 32 || char > 126 {
+			return false
+		}
+	}
+	return true
 }

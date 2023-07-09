@@ -1,7 +1,6 @@
 package asciiart
 
 import (
-	// "fmt"
 	"os"
 )
 
@@ -18,7 +17,7 @@ func AsciiArt(InputString string, banner string) string {
 	}
 	sourceFile, err := os.ReadFile(banner)
 	if err != nil {
-		return err.Error()
+		return "err: " + err.Error()
 	}
 	// Main function: Splitting (split string based on newline position)
 	// ∟--> Sub function: Formatting (change input to allow use of newline & qoutation marks)
