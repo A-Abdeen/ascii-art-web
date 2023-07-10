@@ -37,8 +37,12 @@ func ArtHandler(w http.ResponseWriter, r *http.Request) {
 	if IsAscii(inputString) {
 		banner := r.FormValue("banner")
 		output := Art{Output: asciiart.AsciiArt(inputString, banner)}
-		if strings.HasPrefix(output.Output, "err: ") {
-			http.Error(w, "Internal Server Error: "+strings.TrimPrefix(output.Output, "err: "), http.StatusInternalServerError)
+		if strings.HasPrefix(output.Output, "500: ") {
+			http.Error(w, "Internal Server Error: "+strings.TrimPrefix(output.Output, "500: "), http.StatusInternalServerError)
+			return
+		}
+		if strings.HasPrefix(output.Output, "400: ") {
+			http.Error(w, "Bad Request: "+strings.TrimPrefix(output.Output, "400: "), http.StatusBadRequest)
 			return
 		}
 		t, err := template.ParseFiles("template.html")
@@ -48,7 +52,6 @@ func ArtHandler(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, output)
 	} else {
 		http.Error(w, "Invalid input: Only use English letters, numbers & characters", http.StatusBadRequest)
-		fmt.Println("Unacceptable input")
 	}
 }
 
