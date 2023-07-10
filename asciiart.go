@@ -16,6 +16,8 @@ func AsciiArt(inputString string, banner string) string {
 		banner = "shadow.txt"
 	case banner == "thinkertoy":
 		banner = "thinkertoy.txt"
+	case banner == "internal error":
+		banner = "internal error.txt"
 	default:
 		return "400: " + "Banner use required: available formats are: standard, shadow or thinkertoy."
 	}
