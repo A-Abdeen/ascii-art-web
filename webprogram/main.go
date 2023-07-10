@@ -57,7 +57,7 @@ func ArtHandler(w http.ResponseWriter, r *http.Request) {
 
 func IsAscii(input string) bool {
 	for _, char := range input {
-		if char == 10 {
+		if char == 10 || char == 13 {
 			continue
 		}
 		if char < 32 || char > 126 {
